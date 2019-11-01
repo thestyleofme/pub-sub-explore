@@ -47,9 +47,9 @@ public class ThreadPoolUtil {
                     ThreadFactory namedThreadFactory = new ThreadFactoryBuilder().setNameFormat("thread-pool-%d").build();
                     executorService = new ThreadPoolExecutor(10,
                             20,
-                            0L,
-                            TimeUnit.MILLISECONDS,
-                            new LinkedBlockingQueue<>(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
+                            1L,
+                            TimeUnit.MINUTES,
+                            new LinkedBlockingQueue<>(20), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
                 }
             }
         }
@@ -59,14 +59,14 @@ public class ThreadPoolUtil {
     /**
      * spring的方式
      */
-    public static Executor getAsyncExecutor() {
+    public static ThreadPoolTaskExecutor getAsyncExecutor() {
         ThreadPoolTaskExecutor threadPool = new ThreadPoolTaskExecutor();
         // 设置核心线程数
-        threadPool.setCorePoolSize(5);
+        threadPool.setCorePoolSize(10);
         // 设置最大线程数
-        threadPool.setMaxPoolSize(10);
+        threadPool.setMaxPoolSize(20);
         // 线程池所使用的缓冲队列
-        threadPool.setQueueCapacity(25);
+        threadPool.setQueueCapacity(20);
         // 设置线程活跃时间（秒）
         threadPool.setKeepAliveSeconds(60);
         // 等待所有任务结束后再关闭线程池
